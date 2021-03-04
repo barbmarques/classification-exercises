@@ -3,9 +3,27 @@ from pandas import DataFrame
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 
+def clean_titanic(df):
+    '''
+    clean_titanic will take a dataframe acquired as df and remove columns that are:
+    duplicates,
+    have too many nulls,
+    and will fill in smaller amounts of nulls in embark_town
+    encode sex and embark_town columns
+    
+    return: single cleaned dataframe
+    '''
+    df.drop_duplicates
+    df['embark_town'] = df['embark_town'].fillna('Southampton')
+    dummies = pd.get_dummies(df[['embark_town', 'sex']], drop_first=True)    
+    dropcols = ['deck', 'class', 'embarked', 'sex', 'embark_town']
+    df.drop(columns=dropcols, inplace = True)
+    return pd.concat([df, dummies], axis=1)
+
+
 def handle_missing_values(df):
     return df.assign(
-        embark_town=df.embark_town.fillna('Other'),
+        embark_town=df.embark_town.fillna('Southampton'),
         embarked=df.embarked.fillna('O'),
     )
 
